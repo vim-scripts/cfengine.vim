@@ -1,7 +1,8 @@
 " Vim syntax file
 " Language:	Cfengine configure file
 " Maintainer:	Christain Pearce <christian@pearcec.com>
-" Last Change:	2004 Sep 22
+" Last Change:	2004 Sep 23
+" Version:  0.2
 
 " 1. Add this file to ~/.vim/sytnax/
 "
@@ -19,6 +20,14 @@
 "
 "   vim: set syntax=cfengine
 "
+
+" 0.2 - Fixed TODO
+"     - Improved the class pattern match to allow for oneliners
+"     - Added define=classname to the list of things to be highlighted
+" 0.1 - First release
+
+" TODO: Add highlighting to variables under the control section
+"       Add highlighting to groups under the groups|classes section
 
 
 " For version 5.x: Clear all syntax items
@@ -41,16 +50,16 @@ unlet b:current_syntax
 syn match       cfengineClassOperator        "[$!&|.()]"       contained display
 syn match       cfengineVarSelector     "[$(){}]"       contained display
 
-syn keyword	cfegineTodo	contained TODO FIXME XXX
+syn keyword	cfengineTodo	contained TODO FIXME XXX
 " Avoid matching "text#text", used in /etc/disktab and /etc/gettytab
 syn match	cfengineComment	"^#.*" contains=cfengineTodo
 syn match	cfengineComment	"\s#.*"ms=s+1 contains=cfengineTodo
 syn region      cfengineIdentifier  start="\${" end="}" oneline contains=cfengineVarSelector keepend extend
 syn region      cfengineIdentifier  start="\$(" end=")" oneline contains=cfengineVarSelector keepend extend
-"syn match      cfengineIdentifier  "${\h\w*}" contains=cfengineVarSelector contained extend
 syn region      cfenginePHP     start="<?" end="?>" contains=@phpTop keepend extend
 syn match	cfengineSection	"\s*\a\+:\s*$"he=e-1
-syn match       cfengineClass   "\s*\S*::\s*$"he=e-2 contains=cfengineClassOperator
+syn match       cfengineClass   "\s*\S*::"he=e-2 contains=cfengineClassOperator
+syn match       cfengineClass "define=\w\+"hs=s+7
 syn region	cfengineString	start=+"+ skip=+\\\\\|\\"+ end=+"+ oneline contains=cfengineIdentifier keepend extend
 syn region	cfengineString	start=+'+ skip=+\\\\\|\\'+ end=+'+ oneline contains=cfengineIdentifier keepend extend
 
